@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: forgetwin-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: forgetwin
+      POSTGRES_USER: forgetwin_user
+      POSTGRES_PASSWORD: forgetwin_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forgetwin_user -d forgetwin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
